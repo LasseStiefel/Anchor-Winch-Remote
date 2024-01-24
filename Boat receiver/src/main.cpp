@@ -20,8 +20,14 @@ uint32_t server_value = 0;
 
 #define up 2
 #define down 3
+#define hall_sensor 10
 
-int state = 0;
+int chain_turns = 0;
+float one_turn = 0.2;
+float chain_length = 0;
+
+void send_length();
+
 
 
 class MyServerCallbacks: public BLEServerCallbacks {        //Server Callback 
@@ -40,12 +46,20 @@ class A_get_Callbacks: public BLECharacteristicCallbacks
   void onWrite(BLECharacteristic *pCharacteristic_A_get){
     std::string value = pCharacteristic_A_get->getValue();
     if (value.length() > 0){
-      state = std::stoi(value);
+      int state = std::stoi(value);
       if(state == 1){
         digitalWrite(up, HIGH);
+        if(analogRead(hall_sensor)){
+          chain_turns --;
+        }
+
       }
       else if (state == 2){
         digitalWrite(down, HIGH);
+                if(analogRead(hall_sensor)){
+          chain_turns ++;
+        }
+        
       }
       else{
         digitalWrite(down, LOW);
@@ -57,10 +71,7 @@ class A_get_Callbacks: public BLECharacteristicCallbacks
 
 class A_give_Callbacks: public BLECharacteristicCallbacks {    //A give value
   void onRead(BLECharacteristic *pCharacteristic_A_give) {
-
-    
- // what to send
-    
+ // what to send    
   }
 };
 
@@ -87,4 +98,10 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
+}
+
+void send_length(){
+  chain_length = chain_turns * one_turn;
+  pCharacteristic_A_get->writeValue(chain_length.c_str(), chain_length.length());
+
 }
