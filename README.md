@@ -18,7 +18,9 @@ The Winch is connected to the Double-Relay which is able to comunicate with the 
 A chain counting mechanism is not implemented yet.
 
 ## Micro Controller and remote
-
+The Micro Conrollers I chose are two "Seed Studio Xiao ESP32C3". These are extremly capable yet light weight controllers.
+These Micro Controllers where chosen because they have great connectivity, low energy consumption, Tiny Form factor and a **built in battery charging chip**.
+(Product Link: https://www.seeedstudio.com/Seeed-XIAO-ESP32C3-p-5431.html)
 
 
 
