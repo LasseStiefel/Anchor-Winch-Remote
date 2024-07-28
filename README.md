@@ -62,5 +62,11 @@ The chain length indication should be intuitive easily readable in direct sun li
 Every pixel indicates 10m and the last LED can be used to indicate connection and charging status. Since 70m is also rarely used, the 7th LED could be used to indicate the 5m steps by lighting up when 5m, 15m, 25m and so on are reached and the swithcing off again when the 10s (10m, 20m, 30m) are reached. 
 
 ### Chain length Counting
+There are several approaches to meassuring the chain length:
 
+- Time
+- Infrared Sensor to count revolutions
+- Hall Sensor to count revolutions
+
+Using time to meassure the distance would be the easiest however, since the winch spins a bit longer after releasing the button and not always spinning at constant speeds, this method would probably be fairly inaccurate.
 
