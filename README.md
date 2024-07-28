@@ -5,7 +5,7 @@ Small Note: This is my first Public projct on GitHub so some things might be a b
 The project aims  to create a remote control for the anker winch on a sailing/ motor yacht. 
 Retrofitting a system is expensive and I thought this might be a cool little project to pursue.
 The Anchor chain I am working with is the "Lofran's Tigres", however this project should work with most of the models and brands.
-(Product Example: https://www.lofrans.com/product/75-hand-held-controls/6600-lofrans-radio-control-chaincounter-thetis-7003 - approx. 250 €)
+(Product Example: https://www.lofrans.com/product/75-hand-held-controls/6600-lofrans-radio-control-chaincounter-thetis-7003 - approx. 300 €)
 
 ## Goals
 - Controling whinch movement (Up/ Down) wirelessly **Achieved**
@@ -73,5 +73,7 @@ Using time to meassure the distance would be the easiest however, since the winc
 Hence, measuring how much chain is layed in one revolution and then counting the revolution after would always be accurate. This comes with the drawback that a sensor will have to be installed in the rough enviroment of a chain locker. Writing the code for this method is however fairly simple and quickly implemented.
 Because of chainging light situations and the dirt present in the locker I would opt for the Hall sensor being more reliable and longlasting than the Infrared sensor in this scenario. 
 
+Furthermore in the "Lofrans Thetis 7003 Control" which also has an integrated chain counter, the sensor uesd is also a magnetic sensor.
+
 ### The Code
-The Bluetooth connectivity code is what i started of with and continued writing my code around. I used the exact examples given in the following tutorial: https://randomnerdtutorials.com/esp32-ble-server-client/ 
+The Bluetooth connectivity code is what I started of with and continued writing my code around. I used the exact examples given in the following tutorial: https://randomnerdtutorials.com/esp32-ble-server-client/ 
