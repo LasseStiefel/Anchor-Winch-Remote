@@ -1,11 +1,11 @@
-# Anker Whinch Remote Control
+# Anchor winch remote control
 Small Note: This is my first Public projct on GitHub so some things might be a bit messy 🙃
 
 ## Project Outline
 The project aims  to create a remote control for the anker winch on a sailing/ motor yacht. 
 Retrofitting a system is expensive and I thought this might be a cool little project to pursue.
 The Anchor chain I am working with is the "Lofran's Tigres", however this project should work with most of the models and brands.
-(Product Example: https://www.lofrans.com/product/75-hand-held-controls/6600-lofrans-radio-control-chaincounter-thetis-7003 - approx. 250 €)
+(Product Example: https://www.lofrans.com/product/75-hand-held-controls/6600-lofrans-radio-control-chaincounter-thetis-7003 - approx. 300 €)
 
 ## Goals
 - Controling whinch movement (Up/ Down) wirelessly **Achieved**
@@ -17,7 +17,7 @@ The Winch is connected to the Double-Relay which is able to comunicate with the 
 
 A chain counting mechanism is not implemented yet.
 
-## Design Choices
+## Development choices and technical explanation
 ### Micro Controller
 The Micro Conrollers I chose are two "Seed Studio Xiao ESP32C3". These are extremly capable yet light weight controllers.
 These Micro Controllers where chosen because they are a typical ESP32C3 in a Tiny Form factor and with a **built in battery charging chip**. 
@@ -31,14 +31,15 @@ Since the system runs on 12V, the Idea is to use the ESP to switch a new double 
 The Relay used runs on 5V so I am using a cut up USB C cable to power the ESP. This way we have 5V to power the relay and we only need one step down converter  12V - 5V.
 
 ### Designing the Remote
-The Remote needs to dullfill the following requirements:
+The Remote must fullfill the following requirements:
 
 - 2 Switches for up & down selection
 - Rechargable Battery
 - Charging indication
 - Power switch
 - Chain length Indication
-- 
+<img src="assets/images/remote_outside.jpg" width="350">
+
 **Power**
   
 The Heart of the remote is again the Xiao ESP32C3. It is directly connected to the battery via the batter pads on the underside of the PCB. The Power Switch is connected between the battery and the esp.
@@ -46,6 +47,9 @@ The Heart of the remote is again the Xiao ESP32C3. It is directly connected to t
 The Battery can be caharged via a USB-C connecter which connects to the esp on the 5V pin. 
 
 To indicate if the battery is charging, GPIO 10 is connected to the 5V pin and ground to which a 10k resistor leads. This way, if we read HIGH on GPIO 10, we know that the state is charging and we can disable the buttons to avoid accidental whinch operations. 
+<img src="assets/diagrams & manuals/Remote-schematic.jpg" width="600">
+<img src="assets/images/remote_inside.jpg" width="300">
+
 
 **Switches**
 
@@ -58,5 +62,18 @@ The chain length indication should be intuitive easily readable in direct sun li
 Every pixel indicates 10m and the last LED can be used to indicate connection and charging status. Since 70m is also rarely used, the 7th LED could be used to indicate the 5m steps by lighting up when 5m, 15m, 25m and so on are reached and the swithcing off again when the 10s (10m, 20m, 30m) are reached. 
 
 ### Chain length Counting
+There are several approaches to meassuring the chain length:
 
+- Time
+- Infrared Sensor to count revolutions
+- Hall Sensor to count revolutions
 
+Using time to meassure the distance would be the easiest however, since the winch spins a bit longer after releasing the button and not always spinning at constant speeds, this method would probably be fairly inaccurate.
+
+Hence, measuring how much chain is layed in one revolution and then counting the revolution after would always be accurate. This comes with the drawback that a sensor will have to be installed in the rough enviroment of a chain locker. Writing the code for this method is however fairly simple and quickly implemented.
+Because of chainging light situations and the dirt present in the locker I would opt for the Hall sensor being more reliable and longlasting than the Infrared sensor in this scenario. 
+
+Furthermore in the "Lofrans Thetis 7003 Control" which also has an integrated chain counter, the sensor uesd is also a magnetic sensor.
+
+### The Code
+The Bluetooth connectivity code is what I started of with and continued writing my code around. I used the exact examples given in the following tutorial: https://randomnerdtutorials.com/esp32-ble-server-client/ 
