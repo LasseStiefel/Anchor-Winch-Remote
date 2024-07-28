@@ -19,6 +19,8 @@ static BLEAdvertisedDevice* myDevice;
 
 String state = "0";
 
+int chain_int;
+
 #define up 2
 #define down 3
 #define charging 10
@@ -27,6 +29,9 @@ String state = "0";
 #define NUMPIXELS 8
 
 Adafruit_NeoPixel pixels(NUMPIXELS, LED_PIN, NEO_GRB + NEO_KHZ800);
+
+int chain_function (void);
+
 
 static void notifyCallback(BLERemoteCharacteristic* pBLERemoteCharacteristic,
                             uint8_t* pData, size_t length, bool isNotify)
@@ -157,7 +162,7 @@ class MyAdvertisedDeviceCallbacks: public BLEAdvertisedDeviceCallbacks
 
 void setup() {
   // put your setup code here, to run once:
-  // Serial.begin(115200);
+  Serial.begin(115200);
 
   Serial.println("Starting Arduino BLE Client application...");
   BLEDevice::init("ESP32-BLE-Client");
@@ -189,6 +194,8 @@ if(digitalRead(charging) == LOW){
   if (doConnect == true) {
     if (connectToServer()) {
       Serial.println("We are now connected to the BLE Server.");
+      pixels.setPixelColor(4, pixels.Color(0, 200, 0)); // Green
+      pixels.show();
     } else {
       Serial.println("We have failed to connect to the server; there is nothing more we will do.");
     }
@@ -200,8 +207,10 @@ if(digitalRead(charging) == LOW){
 
   if (upPressed && !downPressed) {
     state = "1";
+    chain_function();
   } else if (downPressed && !upPressed) {
     state = "2";
+    chain_function();
   } else {
     state = "0";
   }
@@ -210,21 +219,21 @@ if(digitalRead(charging) == LOW){
     pRemoteCharacteristic->writeValue(state.c_str(), state.length());
     previousState = state;
 
-    if (state == "1") {
-      pixels.clear();
-      pixels.setPixelColor(0, pixels.Color(150, 0, 0)); // Red
-      pixels.show();
-    } else if (state == "2") {
-      pixels.clear();
-      pixels.setPixelColor(3, pixels.Color(150, 0, 0)); // Red
-      pixels.show();
-    } else {
-      pixels.clear();
-      for (int i = 0; i < NUMPIXELS; i++) {
-        pixels.setPixelColor(4, pixels.Color(0, 200, 0)); // Green
-      }
-      pixels.show();
-    }
+    // if (state == "1") {
+    //   pixels.clear();
+    //   pixels.setPixelColor(0, pixels.Color(150, 0, 0)); // Red
+    //   pixels.show();
+    // } else if (state == "2") {
+    //   pixels.clear();
+    //   pixels.setPixelColor(3, pixels.Color(150, 0, 0)); // Red
+    //   pixels.show();
+    // } else {
+    //   pixels.clear();
+    //   for (int i = 0; i < NUMPIXELS; i++) {
+    //     pixels.setPixelColor(4, pixels.Color(0, 200, 0)); // Green
+    //   }
+    //   pixels.show();
+    // }
   
   }
   delay(100); // Small delay to prevent bouncing issues}
@@ -245,7 +254,91 @@ if(digitalRead(charging) == HIGH){
 }      
 
 
-  // std::string chain_string = pRemoteCharacteristic_Read->readValue();
-  // int chain_int = std::stoi(chain_string);
+}
 
+int chain_function(void){
+    std::string chain_string = pRemoteCharacteristic_Read->readValue();
+    int chain_int = std::stoi(chain_string);
+    Serial.println("Chain Length:");
+    Serial.print(chain_int);
+
+    if (chain_int >= 5 && chain_int <10){
+      pixels.setPixelColor(0, pixels.Color(100, 100, 0)); //yellow  
+      pixels.show();
+    }
+    else if (chain_int <5){
+      pixels.setPixelColor(0, pixels.Color(0, 0, 0)); //off
+      pixels.show();
+    }
+    if (chain_int >= 10){
+      pixels.setPixelColor(0, pixels.Color(0, 0, 150)); //Blue
+      pixels.show();
+    }
+
+    if (chain_int >= 15 && chain_int <20){
+      pixels.setPixelColor(1, pixels.Color(100, 100, 0)); //yellow
+      pixels.show();
+    }
+    else if (chain_int <15){
+      pixels.setPixelColor(1, pixels.Color(0, 0, 0)); //off
+      pixels.show();
+    }
+    if (chain_int >= 20){
+      pixels.setPixelColor(1, pixels.Color(0, 0, 150)); //Blue
+      pixels.show();
+    }
+
+    if (chain_int >= 25 && chain_int <30){
+      pixels.setPixelColor(2, pixels.Color(100, 100, 0)); //yellow
+      pixels.show();
+    }
+    else if (chain_int <25){
+      pixels.setPixelColor(2, pixels.Color(0, 0, 0)); //off
+      pixels.show();
+    }
+    if (chain_int >= 30){
+      pixels.setPixelColor(2, pixels.Color(0, 0, 150)); //Blue
+      pixels.show();
+    }
+
+    if (chain_int >= 35 && chain_int <40){
+      pixels.setPixelColor(3, pixels.Color(100, 100, 0)); //yellow
+      pixels.show();
+    }
+    else if (chain_int <35){
+      pixels.setPixelColor(3, pixels.Color(0, 0, 0)); //off
+      pixels.show();
+    }
+    if (chain_int >= 40){
+      pixels.setPixelColor(3, pixels.Color(0, 0, 150)); //Blue
+      pixels.show();
+    }
+
+    if (chain_int >= 45 && chain_int <50){
+      pixels.setPixelColor(7, pixels.Color(100, 100, 0)); //yellow
+      pixels.show();
+    }
+    else if (chain_int <45){
+      pixels.setPixelColor(7, pixels.Color(0, 0, 0)); //off
+      pixels.show();
+    }
+    if (chain_int >= 50){
+      pixels.setPixelColor(7, pixels.Color(0, 0, 150)); //Blue
+      pixels.show();
+    }
+
+    if (chain_int >= 55 && chain_int <60){
+      pixels.setPixelColor(6, pixels.Color(100, 100, 0)); //yellow
+      pixels.show();
+    }
+    else if (chain_int <55){
+      pixels.setPixelColor(6, pixels.Color(0, 0, 0)); //off
+      pixels.show();
+    }
+    if (chain_int >= 60){
+      pixels.setPixelColor(6, pixels.Color(0, 0, 150)); //Blue
+      pixels.show();
+    }
+
+    return chain_int;
 }
