@@ -47,7 +47,7 @@ The Heart of the remote is again the Xiao ESP32C3. It is directly connected to t
 The Battery can be caharged via a USB-C connecter which connects to the esp on the 5V pin. 
 
 To indicate if the battery is charging, GPIO 10 is connected to the 5V pin and ground to which a 10k resistor leads. This way, if we read HIGH on GPIO 10, we know that the state is charging and we can disable the buttons to avoid accidental whinch operations. 
-<img src="assets/diagrams & manuals/Remote-schematic.jpg" width="450">
+<img src="assets/diagrams & manuals/Remote-schematic.jpg" width="600">
 <img src="assets/images/remote_inside.jpg" width="300">
 
 
@@ -70,3 +70,5 @@ There are several approaches to meassuring the chain length:
 
 Using time to meassure the distance would be the easiest however, since the winch spins a bit longer after releasing the button and not always spinning at constant speeds, this method would probably be fairly inaccurate.
 
+Hence, measuring how much chain is layed in one revolution and then counting the revolution after would always be accurate. This comes with the drawback that a sensor will have to be installed in the rough enviroment of a chain locker. Writing the code for this method is however fairly simple and quickly implemented.
+Because of chainging light situations and the dirt present in the locker I would opt for the Hall sensor being more reliable and longlasting than the Infrared sensor in this scenario. 
