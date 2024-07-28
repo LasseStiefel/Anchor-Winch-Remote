@@ -1,4 +1,4 @@
-# Ancher Winch Remote Control
+# Anchor winch remote control
 Small Note: This is my first Public projct on GitHub so some things might be a bit messy 🙃
 
 ## Project Outline
