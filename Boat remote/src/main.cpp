@@ -1,6 +1,8 @@
 #include <Arduino.h>
 #include <BLEDevice.h>
 
+#include <Adafruit_NeoPixel.h>
+
 /* Specify the Service UUID of Server */
 static BLEUUID serviceUUID("4fafc201-1fb5-459e-8fcc-c5c9c331914b");
 /* Specify the Characteristic UUID of the Write Server */
@@ -19,6 +21,12 @@ String state = "0";
 
 #define up 2
 #define down 3
+#define charging 10
+
+#define LED_PIN 5
+#define NUMPIXELS 8
+
+Adafruit_NeoPixel pixels(NUMPIXELS, LED_PIN, NEO_GRB + NEO_KHZ800);
 
 static void notifyCallback(BLERemoteCharacteristic* pBLERemoteCharacteristic,
                             uint8_t* pData, size_t length, bool isNotify)
@@ -149,7 +157,7 @@ class MyAdvertisedDeviceCallbacks: public BLEAdvertisedDeviceCallbacks
 
 void setup() {
   // put your setup code here, to run once:
-  Serial.begin(115200);
+  // Serial.begin(115200);
 
   Serial.println("Starting Arduino BLE Client application...");
   BLEDevice::init("ESP32-BLE-Client");
@@ -164,40 +172,80 @@ void setup() {
   pBLEScan->setWindow(449);
   pBLEScan->setActiveScan(true);
   pBLEScan->start(5, false);
+
+  pixels.begin();
+
+  pixels.setPixelColor(4, pixels.Color(150, 0, 0)); // Red
+  pixels.show();
 }
 
 void loop() {
 
-  if (doConnect == true){
-    if (connectToServer()){
+if(digitalRead(charging) == LOW){
+
+
+  static String previousState = "";
+  
+  if (doConnect == true) {
+    if (connectToServer()) {
       Serial.println("We are now connected to the BLE Server.");
-    } 
-    else{
-      Serial.println("We have failed to connect to the server; there is nothin more we will do.");
+    } else {
+      Serial.println("We have failed to connect to the server; there is nothing more we will do.");
     }
-      doConnect = false;
-      }
+    doConnect = false;
+  }
 
+  bool upPressed = digitalRead(up) == HIGH;
+  bool downPressed = digitalRead(down) == HIGH;
 
-  if (digitalRead(up) == HIGH && digitalRead(down) == LOW){
+  if (upPressed && !downPressed) {
     state = "1";
-    pRemoteCharacteristic->writeValue(state.c_str(), state.length());
-
-  }
-  if (digitalRead(down) == HIGH && digitalRead(up) == LOW)
-  {
+  } else if (downPressed && !upPressed) {
     state = "2";
-    pRemoteCharacteristic->writeValue(state.c_str(), state.length());
-
-  }
-  else{
+  } else {
     state = "0";
-    pRemoteCharacteristic->writeValue(state.c_str(), state.length());
-
   }
 
+  if (state != previousState) {
+    pRemoteCharacteristic->writeValue(state.c_str(), state.length());
+    previousState = state;
 
-  std::string chain_string = pRemoteCharacteristic_Read->readValue();
-  int chain_int = std::stoi(chain_string);
+    if (state == "1") {
+      pixels.clear();
+      pixels.setPixelColor(0, pixels.Color(150, 0, 0)); // Red
+      pixels.show();
+    } else if (state == "2") {
+      pixels.clear();
+      pixels.setPixelColor(3, pixels.Color(150, 0, 0)); // Red
+      pixels.show();
+    } else {
+      pixels.clear();
+      for (int i = 0; i < NUMPIXELS; i++) {
+        pixels.setPixelColor(4, pixels.Color(0, 200, 0)); // Green
+      }
+      pixels.show();
+    }
+  
+  }
+  delay(100); // Small delay to prevent bouncing issues}
+}
+
+if(digitalRead(charging) == HIGH){
+  for(int i=1; i<8; i++) {
+    pixels.setPixelColor(i, pixels.Color(0, 0, 0)); //off
+    pixels.show();
+  }
+  pixels.setPixelColor(4, pixels.Color(0, 100, 0)); //green
+  pixels.show();
+  delay(500);
+  pixels.setPixelColor(4, pixels.Color(0, 0, 0)); //off
+  pixels.show();
+  delay(500);
+  Serial.println("Charging");
+}      
+
+
+  // std::string chain_string = pRemoteCharacteristic_Read->readValue();
+  // int chain_int = std::stoi(chain_string);
 
 }
