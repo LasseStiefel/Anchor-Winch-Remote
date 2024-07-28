@@ -17,7 +17,7 @@ The Winch is connected to the Double-Relay which is able to comunicate with the 
 
 A chain counting mechanism is not implemented yet.
 
-## Design Choices
+## Development choices and technical explanation
 ### Micro Controller
 The Micro Conrollers I chose are two "Seed Studio Xiao ESP32C3". These are extremly capable yet light weight controllers.
 These Micro Controllers where chosen because they are a typical ESP32C3 in a Tiny Form factor and with a **built in battery charging chip**. 
@@ -72,3 +72,6 @@ Using time to meassure the distance would be the easiest however, since the winc
 
 Hence, measuring how much chain is layed in one revolution and then counting the revolution after would always be accurate. This comes with the drawback that a sensor will have to be installed in the rough enviroment of a chain locker. Writing the code for this method is however fairly simple and quickly implemented.
 Because of chainging light situations and the dirt present in the locker I would opt for the Hall sensor being more reliable and longlasting than the Infrared sensor in this scenario. 
+
+### The Code
+The Bluetooth connectivity code is what i started of with and continued writing my code around. I used the exact examples given in the following tutorial: https://randomnerdtutorials.com/esp32-ble-server-client/ 
