@@ -31,14 +31,15 @@ Since the system runs on 12V, the Idea is to use the ESP to switch a new double 
 The Relay used runs on 5V so I am using a cut up USB C cable to power the ESP. This way we have 5V to power the relay and we only need one step down converter  12V - 5V.
 
 ### Designing the Remote
-The Remote needs to dullfill the following requirements:
+The Remote must fullfill the following requirements:
 
 - 2 Switches for up & down selection
 - Rechargable Battery
 - Charging indication
 - Power switch
 - Chain length Indication
-- 
+<img src="assets/images/remote_outside.jpg" width="350">
+
 **Power**
   
 The Heart of the remote is again the Xiao ESP32C3. It is directly connected to the battery via the batter pads on the underside of the PCB. The Power Switch is connected between the battery and the esp.
@@ -46,6 +47,9 @@ The Heart of the remote is again the Xiao ESP32C3. It is directly connected to t
 The Battery can be caharged via a USB-C connecter which connects to the esp on the 5V pin. 
 
 To indicate if the battery is charging, GPIO 10 is connected to the 5V pin and ground to which a 10k resistor leads. This way, if we read HIGH on GPIO 10, we know that the state is charging and we can disable the buttons to avoid accidental whinch operations. 
+<img src="assets/diagrams & manuals/Remote-schematic.jpg" width="450">
+<img src="assets/images/remote_inside.jpg" width="300">
+
 
 **Switches**
 
