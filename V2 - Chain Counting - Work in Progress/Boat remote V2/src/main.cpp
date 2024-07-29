@@ -21,6 +21,8 @@ String state = "0";
 
 int chain_int;
 
+float revolution_length = 0.2;
+
 #define up 2
 #define down 3
 #define charging 10
@@ -258,9 +260,11 @@ if(digitalRead(charging) == HIGH){
 
 int chain_function(void){
     std::string chain_string = pRemoteCharacteristic_Read->readValue();
-    int chain_int = std::stoi(chain_string);
+    int revolution = std::stoi(chain_string);
     Serial.println("Chain Length:");
-    Serial.print(chain_int);
+    Serial.print(revolution);
+
+    chain_int = revolution * revolution_length;
 
     if (chain_int >= 5 && chain_int <10){
       pixels.setPixelColor(0, pixels.Color(100, 100, 0)); //yellow  

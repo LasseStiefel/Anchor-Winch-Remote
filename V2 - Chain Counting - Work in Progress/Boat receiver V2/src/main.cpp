@@ -29,8 +29,6 @@ uint32_t server_value = 0;
 #define hall_sensor 8
 
 int revolution = 0;
-int chain_length = 0;   //chain length after function
-int revolution_length = 1;    // circumference winch
 
 int state_previous;
 
@@ -40,13 +38,10 @@ void hallSensorISR() {
     revolution--;}
   else {
     revolution++;}
-  chain_length = revolution * revolution_length;
-  Serial.println(chain_length);
+  Serial.println(revolution);
   Serial.println("Interrupt");
-
-  std::string chain_length_s = std::to_string(chain_length);
-
-  pCharacteristic_A_give->setValue(chain_length_s);
+  std::string revolution_s = std::to_string(revolution);
+  pCharacteristic_A_give->setValue(revolution_s);
 
 }
 
@@ -61,9 +56,9 @@ class MyServerCallbacks: public BLEServerCallbacks {        //Server Callback
 
     void onDisconnect(BLEServer* pServer) {
       deviceConnected = false;
-      // digitalWrite(down, HIGH);
-      // digitalWrite(up, HIGH);
-      // Serial.println("N.A. Disconnect");
+      digitalWrite(down, HIGH);
+      digitalWrite(up, HIGH);
+      Serial.println("N.A. Disconnect");
     }
 };
 
