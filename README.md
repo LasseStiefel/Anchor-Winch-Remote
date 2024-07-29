@@ -11,11 +11,11 @@ The Anchor chain I am working with is the "Lofran's Tigres", however this projec
 - Controling whinch movement (Up/ Down) wirelessly **Achieved**
 - Meassuring chain length and displaying it on the remote
 
-## Project Status - 28. Jul. 2024
-Currently the remote remote hardware is designed and capable of fullfiling all project goals. 
+## Project Status - 29. Jul. 2024
+Currently the remote hardware is designed and capable of fullfiling all project goals. 
 The Winch is connected to the Double-Relay which is able to comunicate with the remote control and control the winch. 
 
-A chain counting mechanism is not implemented yet.
+The remote receives the count of winch turns and calculates and displays the current chain length
 
 ## Development choices and technical explanation
 ### Micro Controller
@@ -59,7 +59,7 @@ The switches are simply connected to GPIO 2 & 3 and grounded with 10k resistors.
 
 The chain length indication should be intuitive easily readable in direct sun light and big. Therefor I chose to use eight Neo Pixel LEDs for this purpose (Product Example: https://www.aliexpress.com/item/32560280169.html?spm=a2g0o.order_list.order_list_main.41.5b9d180288LQx0). 
 
-Every pixel indicates 10m and the last LED can be used to indicate connection and charging status. Since 70m is also rarely used, the 7th LED could be used to indicate the 5m steps by lighting up when 5m, 15m, 25m and so on are reached and the swithcing off again when the 10s (10m, 20m, 30m) are reached. 
+Every pixel indicates 10m and the last LED can be used to indicate connection and charging status. When the lenght is received, it updates the neopixel leds. If a led turns yellow, the 5m state is reached and when the 10m is reaached, it turns blue. The same happens to the second led with 15m and then 20m. This way we can keep track of every 5m of the chain. 
 
 ### Chain length Counting
 There are several approaches to meassuring the chain length:
@@ -75,5 +75,12 @@ Because of chainging light situations and the dirt present in the locker I would
 
 Furthermore in the "Lofrans Thetis 7003 Control" which also has an integrated chain counter, the sensor uesd is also a magnetic sensor.
 
+**The Hall Sensor**
+
+The hall sensor has a simple circuit. It is placed on a small PCB in the sensor housing. Running to the sensor is a 3-wire cable. 
+<img src="assets/diagrams & manuals/Hall_sensot_circuit.jpeg" width="300">. 
+The sesnsor is HIGH as standard and everytime the ESP pin reads LOW, it means that the winch has turned one revolution. I implemented a interrupt to triger the counting and sending of the winch turns. This way the counting works at all times and also if the winch spins further after not pressing the button anymore.
+
 ### The Code
-The Bluetooth connectivity code is what I started of with and continued writing my code around. I used the exact examples given in the following tutorial: https://randomnerdtutorials.com/esp32-ble-server-client/ 
+The Bluetooth connectivity code is what I started of with and continued writing my code around. I used the exact examples given in the following tutorial: https://randomnerdtutorials.com/esp32-ble-server-client/. 
+
