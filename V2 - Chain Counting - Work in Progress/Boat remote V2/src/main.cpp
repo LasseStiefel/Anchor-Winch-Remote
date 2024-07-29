@@ -21,7 +21,7 @@ String state = "0";
 
 int chain_int;
 
-float revolution_length = 0.2;
+float revolution_length = 0.3;
 
 #define up 2
 #define down 3
@@ -255,6 +255,7 @@ if(digitalRead(charging) == HIGH){
   Serial.println("Charging");
 }      
 
+chain_function();
 
 }
 
