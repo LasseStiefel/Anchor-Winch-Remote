@@ -15,7 +15,9 @@ The Anchor chain I am working with is the "Lofran's Tigres", however this projec
 Currently the remote hardware is designed and capable of fullfiling all project goals. 
 The Winch is connected to the Double-Relay which is able to comunicate with the remote control and control the winch. 
 
-The remote receives the count of winch turns and calculates and displays the current chain length
+The remote receives the count of winch turns and calculates and displays the current chain length.
+
+**Project mostly complete**
 
 ## Development choices and technical explanation
 ### Micro Controller
