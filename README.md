@@ -82,7 +82,8 @@ Furthermore in the "Lofrans Thetis 7003 Control" which also has an integrated ch
 
 The hall sensor has a simple circuit. It is placed on a small PCB in the sensor housing. Running to the sensor is a 3-wire cable. 
 
-<img src="assets/diagrams & manuals/Hall_sensot_circuit.jpeg" width="300">. 
+<img src="assets/diagrams & manuals/Hall_sensot_circuit.jpeg" width="300"> 
+<img src="assets/images/hall_sensor_&_magnet_on_winch.jpeg" width="300">
 
 The sesnsor is HIGH as standard and everytime the ESP pin reads LOW, it means that the winch has turned one revolution. I implemented a interrupt to triger the counting and sending of the winch turns. This way the counting works at all times and also if the winch spins further after not pressing the button anymore.
 
