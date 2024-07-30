@@ -15,7 +15,9 @@ The Anchor chain I am working with is the "Lofran's Tigres", however this projec
 Currently the remote hardware is designed and capable of fullfiling all project goals. 
 The Winch is connected to the Double-Relay which is able to comunicate with the remote control and control the winch. 
 
-The remote receives the count of winch turns and calculates and displays the current chain length
+The remote receives the count of winch turns and calculates and displays the current chain length.
+
+**Project mostly complete**
 
 ## Development choices and technical explanation
 ### Micro Controller
@@ -46,14 +48,15 @@ The Heart of the remote is again the Xiao ESP32C3. It is directly connected to t
 
 The Battery can be caharged via a USB-C connecter which connects to the esp on the 5V pin. 
 
-To indicate if the battery is charging, GPIO 10 is connected to the 5V pin and ground to which a 10k resistor leads. This way, if we read HIGH on GPIO 10, we know that the state is charging and we can disable the buttons to avoid accidental whinch operations. 
+To indicate if the battery is charging, GPIO 10 is connected to the 5V pin and ground to which a 10k resistor leads. This way, if we read HIGH on GPIO 10, we know that the state is charging and we can disable the buttons to avoid accidental winch operations. 
+
 <img src="assets/diagrams & manuals/Remote-schematic.jpg" width="600">
 <img src="assets/images/remote_inside.jpg" width="300">
 
 
 **Switches**
 
-The switches are simply connected to GPIO 2 & 3 and grounded with 10k resistors. One is used for up and one for down.
+The switches are simply connected to GPIO 2 & 3 and grounded with 10k resistors. One is used for up and one for down (shown in the schematic above).
 
 **Chain length Indication**
 
@@ -78,7 +81,9 @@ Furthermore in the "Lofrans Thetis 7003 Control" which also has an integrated ch
 **The Hall Sensor**
 
 The hall sensor has a simple circuit. It is placed on a small PCB in the sensor housing. Running to the sensor is a 3-wire cable. 
+
 <img src="assets/diagrams & manuals/Hall_sensot_circuit.jpeg" width="300">. 
+
 The sesnsor is HIGH as standard and everytime the ESP pin reads LOW, it means that the winch has turned one revolution. I implemented a interrupt to triger the counting and sending of the winch turns. This way the counting works at all times and also if the winch spins further after not pressing the button anymore.
 
 ### The Code
