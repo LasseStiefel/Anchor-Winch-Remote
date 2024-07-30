@@ -40,6 +40,11 @@ void hallSensorISR() {
     revolution++;}
   Serial.println(revolution);
   Serial.println("Interrupt");
+  
+  if (revolution < 0){
+    revolution = 0;
+  }
+
   std::string revolution_s = std::to_string(revolution);
   pCharacteristic_A_give->setValue(revolution_s);
 
@@ -78,10 +83,21 @@ class A_get_Callbacks: public BLECharacteristicCallbacks {      //A get value
         state_previous = 2;
         Serial.println("DOWN");
       }
+      else if(state == 3){
+        revolution = 0;
+        digitalWrite(up, HIGH);
+        digitalWrite(down, HIGH);
+        Serial.println("length reset");
+
+        std::string revolution_s = std::to_string(revolution);
+        pCharacteristic_A_give->setValue(revolution_s);
+      }
       else{
         digitalWrite(up, HIGH);
         digitalWrite(down, HIGH);
         Serial.println("N.A. Callback");
+        std::string revolution_s = std::to_string(revolution);
+        pCharacteristic_A_give->setValue(revolution_s);
       }
     }
   }
@@ -150,10 +166,5 @@ void setup() {
 }
 
 void loop() {
-  // if (!deviceConnected){
-  //   digitalWrite(down, HIGH);
-  //   digitalWrite(up, HIGH);
-  //   Serial.println("N.A. loop");
-  // }
 
 }

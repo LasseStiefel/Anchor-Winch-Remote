@@ -210,10 +210,16 @@ if(digitalRead(charging) == LOW){
   if (upPressed && !downPressed) {
     state = "1";
     chain_function();
-  } else if (downPressed && !upPressed) {
+  } 
+  else if (downPressed && !upPressed) {
     state = "2";
     chain_function();
-  } else {
+  } 
+  else if (downPressed && upPressed){
+    state = "3";
+    chain_function();
+  }
+  else {
     state = "0";
   }
 
@@ -223,7 +229,7 @@ if(digitalRead(charging) == LOW){
   
   }
   delay(100); // Small delay to prevent bouncing issues}
-  chain_function();
+  // chain_function();
 }
 
 if(digitalRead(charging) == HIGH){
