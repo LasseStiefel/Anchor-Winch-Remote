@@ -21,7 +21,7 @@ String state = "0";
 
 int chain_int;
 
-float revolution_length = 0.3;
+float revolution_length = 0.37;
 
 #define up 2
 #define down 3
@@ -220,25 +220,10 @@ if(digitalRead(charging) == LOW){
   if (state != previousState) {
     pRemoteCharacteristic->writeValue(state.c_str(), state.length());
     previousState = state;
-
-    // if (state == "1") {
-    //   pixels.clear();
-    //   pixels.setPixelColor(0, pixels.Color(150, 0, 0)); // Red
-    //   pixels.show();
-    // } else if (state == "2") {
-    //   pixels.clear();
-    //   pixels.setPixelColor(3, pixels.Color(150, 0, 0)); // Red
-    //   pixels.show();
-    // } else {
-    //   pixels.clear();
-    //   for (int i = 0; i < NUMPIXELS; i++) {
-    //     pixels.setPixelColor(4, pixels.Color(0, 200, 0)); // Green
-    //   }
-    //   pixels.show();
-    // }
   
   }
   delay(100); // Small delay to prevent bouncing issues}
+  chain_function();
 }
 
 if(digitalRead(charging) == HIGH){
@@ -254,8 +239,6 @@ if(digitalRead(charging) == HIGH){
   delay(500);
   Serial.println("Charging");
 }      
-
-chain_function();
 
 }
 
